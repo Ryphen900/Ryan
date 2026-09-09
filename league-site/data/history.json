@@ -1,0 +1,314 @@
+{
+  "yearsCovered": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "currentYearIncluded": 2026,
+  "managers": [
+    {
+      "name": "Tony P",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 35,
+      "losses": 24,
+      "ties": 0,
+      "winPct": 0.593,
+      "pointsFor": 6294.9,
+      "pointsAgainst": 6088.2,
+      "pointsPerGame": 106.7,
+      "championships": 1,
+      "runnerUps": 1,
+      "bestFinish": 1,
+      "teamNames": [
+        "Bye Week Bandits",
+        "Bye Bye Birdie",
+        "Byes Before Guys"
+      ]
+    },
+    {
+      "name": "Chris L",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 34,
+      "losses": 25,
+      "ties": 0,
+      "winPct": 0.576,
+      "pointsFor": 6027.8,
+      "pointsAgainst": 5742.9,
+      "pointsPerGame": 102.2,
+      "championships": 1,
+      "runnerUps": 0,
+      "bestFinish": 1,
+      "teamNames": [
+        "The Handcuffs",
+        "Cuffed Up",
+        "Handcuff Nation"
+      ]
+    },
+    {
+      "name": "Kev",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 33,
+      "losses": 26,
+      "ties": 0,
+      "winPct": 0.559,
+      "pointsFor": 6198.2,
+      "pointsAgainst": 6077.9,
+      "pointsPerGame": 105.1,
+      "championships": 0,
+      "runnerUps": 1,
+      "bestFinish": 2,
+      "teamNames": [
+        "Zero RB Zealots",
+        "Hero RB",
+        "RB Dead Zone"
+      ]
+    },
+    {
+      "name": "Joey B",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 33,
+      "losses": 26,
+      "ties": 0,
+      "winPct": 0.559,
+      "pointsFor": 6037.1,
+      "pointsAgainst": 5784.9,
+      "pointsPerGame": 102.3,
+      "championships": 0,
+      "runnerUps": 1,
+      "bestFinish": 2,
+      "teamNames": [
+        "Garbage Time Gary",
+        "Garbage Plate",
+        "Trash Pandas"
+      ]
+    },
+    {
+      "name": "Marcus H",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 32,
+      "losses": 27,
+      "ties": 0,
+      "winPct": 0.542,
+      "pointsFor": 6126.1,
+      "pointsAgainst": 6038,
+      "pointsPerGame": 103.8,
+      "championships": 0,
+      "runnerUps": 0,
+      "bestFinish": 3,
+      "teamNames": [
+        "The Punt Life",
+        "Punt Intended",
+        "Punt City"
+      ]
+    },
+    {
+      "name": "Nate R",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 30,
+      "losses": 29,
+      "ties": 0,
+      "winPct": 0.508,
+      "pointsFor": 6134,
+      "pointsAgainst": 5966.7,
+      "pointsPerGame": 104,
+      "championships": 1,
+      "runnerUps": 0,
+      "bestFinish": 1,
+      "teamNames": [
+        "Sunday Scaries",
+        "Scary Terry",
+        "Sunday Best"
+      ]
+    },
+    {
+      "name": "Ryan D",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 29,
+      "losses": 30,
+      "ties": 0,
+      "winPct": 0.492,
+      "pointsFor": 6059.1,
+      "pointsAgainst": 6115.9,
+      "pointsPerGame": 102.7,
+      "championships": 0,
+      "runnerUps": 1,
+      "bestFinish": 2,
+      "teamNames": [
+        "Autodraft Andy",
+        "Draft Day Disaster",
+        "Mock Draft Millionaire"
+      ]
+    },
+    {
+      "name": "Big Mike",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 28,
+      "losses": 31,
+      "ties": 0,
+      "winPct": 0.475,
+      "pointsFor": 5950.2,
+      "pointsAgainst": 6135,
+      "pointsPerGame": 100.9,
+      "championships": 1,
+      "runnerUps": 0,
+      "bestFinish": 1,
+      "teamNames": [
+        "Waiver Wire Warriors",
+        "Wire Tappers",
+        "Waiver Wonders"
+      ]
+    },
+    {
+      "name": "Will K",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 28,
+      "losses": 31,
+      "ties": 0,
+      "winPct": 0.475,
+      "pointsFor": 5939.7,
+      "pointsAgainst": 6173.9,
+      "pointsPerGame": 100.7,
+      "championships": 0,
+      "runnerUps": 0,
+      "bestFinish": 3,
+      "teamNames": [
+        "Commissioner's Curse",
+        "Abuse of Power",
+        "Veto This"
+      ]
+    },
+    {
+      "name": "Dev S",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 24,
+      "losses": 35,
+      "ties": 0,
+      "winPct": 0.407,
+      "pointsFor": 6087.7,
+      "pointsAgainst": 6149.9,
+      "pointsPerGame": 103.2,
+      "championships": 0,
+      "runnerUps": 0,
+      "bestFinish": 5,
+      "teamNames": [
+        "Kittle Me This",
+        "Kittle Litter",
+        "Kittle Corn"
+      ]
+    },
+    {
+      "name": "Andre T",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 24,
+      "losses": 35,
+      "ties": 0,
+      "winPct": 0.407,
+      "pointsFor": 5871.2,
+      "pointsAgainst": 6094.5,
+      "pointsPerGame": 99.5,
+      "championships": 0,
+      "runnerUps": 0,
+      "bestFinish": 4,
+      "teamNames": [
+        "Injured Reserved",
+        "IR Stash",
+        "Questionable Tag"
+      ]
+    },
+    {
+      "name": "Sam W",
+      "seasons": 5,
+      "firstYear": 2022,
+      "wins": 24,
+      "losses": 35,
+      "ties": 0,
+      "winPct": 0.407,
+      "pointsFor": 5728.5,
+      "pointsAgainst": 6086.7,
+      "pointsPerGame": 97.1,
+      "championships": 0,
+      "runnerUps": 0,
+      "bestFinish": 3,
+      "teamNames": [
+        "Flex Appeal",
+        "Flex Offender",
+        "Full Flex"
+      ]
+    }
+  ],
+  "champions": [
+    {
+      "year": 2025,
+      "manager": "Tony P",
+      "team": "Bye Week Bandits"
+    },
+    {
+      "year": 2024,
+      "manager": "Chris L",
+      "team": "Handcuff Nation"
+    },
+    {
+      "year": 2023,
+      "manager": "Big Mike",
+      "team": "Wire Tappers"
+    },
+    {
+      "year": 2022,
+      "manager": "Nate R",
+      "team": "Sunday Scaries"
+    }
+  ],
+  "records": {
+    "highestGame": {
+      "manager": "Andre T",
+      "year": 2022,
+      "week": 13,
+      "points": 133.9
+    },
+    "lowestGame": {
+      "manager": "Big Mike",
+      "year": 2024,
+      "week": 7,
+      "points": 72.1
+    },
+    "biggestBlowout": {
+      "margin": 61.2,
+      "year": 2022,
+      "week": 6,
+      "winner": "Kev",
+      "loser": "Big Mike",
+      "isMatchup": true
+    },
+    "closestGame": {
+      "margin": 0,
+      "year": 2024,
+      "week": 4,
+      "winner": "Tony P",
+      "loser": "Dev S",
+      "isMatchup": true
+    },
+    "bestSeason": {
+      "manager": "Chris L",
+      "year": 2024,
+      "points": 1614
+    },
+    "worstSeason": {
+      "manager": "Sam W",
+      "year": 2024,
+      "points": 1285.4
+    }
+  }
+}
