@@ -5,7 +5,7 @@ name: Refresh league data
 #  It's the number in your ESPN URL after  leagueId=
 # ============================================================
 env:
-  ESPN_LEAGUE_ID: "PASTE_YOUR_LEAGUE_ID_HERE"
+  ESPN_LEAGUE_ID: 1012356693
   ESPN_SEASON: "2026"
 
 on:
