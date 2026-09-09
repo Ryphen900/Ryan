@@ -1,0 +1,336 @@
+:root {
+  --ink: #12211e;
+  --pine: #1c4b3c;
+  --paper: #e9ebe4;
+  --flag: #f2c230;
+  --muted: #7c857a;
+  --rule: rgba(18, 33, 30, 0.16);
+
+  --measure: 66ch;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.1875rem);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: "Anton", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+  margin: 0;
+}
+
+a { color: inherit; text-underline-offset: 0.2em; }
+
+:focus-visible {
+  outline: 3px solid var(--pine);
+  outline-offset: 3px;
+}
+
+.loading { color: var(--muted); font-style: italic; }
+
+/* ------------------------------------------------------------- masthead */
+
+.masthead {
+  background: var(--pine);
+  color: var(--paper);
+  padding: clamp(2rem, 6vw, 3.5rem) var(--gutter) clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.masthead__season {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  color: rgba(233, 235, 228, 0.72);
+}
+
+.masthead__name {
+  font-size: clamp(2.75rem, 11vw, 6.5rem);
+  max-width: 14ch;
+}
+
+.masthead__nav {
+  margin-top: clamp(1.25rem, 4vw, 2rem);
+  display: flex;
+  gap: 1.75rem;
+  font-size: 1rem;
+}
+
+.masthead__nav a { text-decoration-color: rgba(233, 235, 228, 0.4); }
+.masthead__nav a:hover { text-decoration-color: var(--flag); }
+
+/* ---------------------------------------------------------------- layout */
+
+main { padding: 0 var(--gutter); }
+
+main > section {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: clamp(2.75rem, 8vw, 4.5rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+main > section:last-of-type { border-bottom: 0; }
+
+main > section > h2 {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  margin-bottom: 1.5rem;
+}
+
+/* --------------------------------------------------------------- verdict */
+
+.verdict__heading {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  margin-bottom: 1.5rem;
+}
+
+.verdict__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 46rem) {
+  .verdict__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .verdict__grid .card--shame {
+    grid-column: 1 / -1;
+  }
+}
+
+.card {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--rule);
+}
+
+.card__label {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.card__team {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: clamp(1.35rem, 3.5vw, 1.9rem);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.card__detail {
+  margin: 0.4rem 0 0;
+  font-size: 0.98rem;
+  color: var(--muted);
+}
+
+/* The one loud thing on the page. */
+.card--shame {
+  background: var(--flag);
+  border-color: var(--ink);
+  border-width: 2px;
+  padding: clamp(1.5rem, 5vw, 2.25rem) 1.4rem;
+}
+
+.card--shame .card__label,
+.card--shame .card__detail { color: rgba(18, 33, 30, 0.72); }
+
+.card--shame .card__team { font-size: clamp(1.9rem, 7vw, 3.25rem); }
+
+/* ---------------------------------------------------------------- ladder */
+
+.ladder__scroll { overflow-x: auto; }
+
+.ladder__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.ladder__table th,
+.ladder__table td {
+  text-align: left;
+  padding: 0.65rem 0.9rem 0.65rem 0;
+}
+
+.ladder__table thead th {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--ink);
+}
+
+.ladder__table tbody tr { border-bottom: 1px solid var(--rule); }
+
+.ladder__table .num,
+.ladder__table td.num { text-align: right; padding-right: 0; }
+
+.col-rank { width: 2.5rem; }
+
+.ladder__table td.col-rank {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.ladder__table td.col-team { white-space: normal; font-weight: 600; }
+
+/* Playoff line: top six make it. */
+.ladder__table tbody tr.cutline { border-bottom: 2px dashed var(--pine); }
+
+.ladder__note {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- scores */
+
+.scores__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.scores__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
+}
+
+.scores__side { flex: 1 1 12rem; }
+.scores__side--won { font-weight: 600; }
+.scores__side--lost { color: var(--muted); }
+.scores__pts { font-family: "Anton", Impact, sans-serif; margin-left: 0.4rem; }
+.scores__margin { flex: 0 0 auto; font-size: 0.9rem; color: var(--muted); }
+
+/* --------------------------------------------------------------- archive */
+
+.issue { border-bottom: 1px solid var(--rule); }
+.issue:last-child { border-bottom: 0; }
+
+.issue__toggle {
+  list-style: none;
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 1.4rem 2.5rem 1.4rem 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+}
+
+.issue__toggle::-webkit-details-marker { display: none; }
+
+.issue__title {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  line-height: 1.05;
+  display: block;
+}
+
+.issue__dek {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+.issue__toggle::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 1.3rem;
+  font-family: "Anton", Impact, sans-serif;
+  font-size: 1.5rem;
+  color: var(--pine);
+}
+
+.issue[open] .issue__toggle::after { content: "–"; }
+
+.issue__body {
+  max-width: var(--measure);
+  padding-bottom: 1.75rem;
+}
+
+.issue__body h2 {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: 1.25rem;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.issue__body p { margin: 0 0 1rem; }
+.issue__body strong { font-weight: 600; }
+
+/* ---------------------------------------------------------------- footer */
+
+.footer {
+  background: var(--ink);
+  color: rgba(233, 235, 228, 0.6);
+  padding: 2rem var(--gutter);
+  font-size: 0.9rem;
+}
+
+.footer p { margin: 0 0 0.35rem; max-width: var(--measure); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------- all-time records */
+
+.titles__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.titles__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.titles__year {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: 1.5rem;
+  min-width: 4rem;
+  color: var(--pine);
+}
+
+.titles__manager { font-weight: 600; font-size: 1.1rem; }
+.titles__team { color: var(--muted); font-style: italic; }
+
+.alias__row {
+  margin: 0 0 0.6rem;
+  max-width: var(--measure);
+  color: var(--muted);
+}
+
+.alias__row strong { color: var(--ink); }
