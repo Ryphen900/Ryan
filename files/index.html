@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>League HQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <p class="masthead__season" id="season">2026 season</p>
+  <h1 class="masthead__name" id="league-name">League HQ</h1>
+  <nav class="masthead__nav">
+    <a href="#ladder">Standings</a>
+    <a href="#archive">Newsletters</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="verdict" id="verdict" aria-labelledby="verdict-heading">
+    <h2 class="verdict__heading" id="verdict-heading">Week <span id="week-number">—</span> is in the books</h2>
+    <div class="verdict__grid" id="verdict-grid">
+      <p class="loading">Loading this week's damage…</p>
+    </div>
+  </section>
+
+  <section class="ladder" id="ladder" aria-labelledby="ladder-heading">
+    <h2 id="ladder-heading">The ladder</h2>
+    <div class="ladder__scroll">
+      <table class="ladder__table">
+        <thead>
+          <tr>
+            <th scope="col" class="col-rank">#</th>
+            <th scope="col" class="col-team">Team</th>
+            <th scope="col">Record</th>
+            <th scope="col" class="num">Points for</th>
+            <th scope="col" class="num">Points against</th>
+            <th scope="col">Streak</th>
+          </tr>
+        </thead>
+        <tbody id="ladder-body">
+          <tr><td colspan="6" class="loading">Loading standings…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ladder__note" id="ladder-note"></p>
+  </section>
+
+  <section class="scores" id="scores" aria-labelledby="scores-heading">
+    <h2 id="scores-heading">Every result</h2>
+    <ul class="scores__list" id="scores-list"></ul>
+  </section>
+
+  <section class="archive" id="archive" aria-labelledby="archive-heading">
+    <h2 id="archive-heading">The newsletter</h2>
+    <div id="archive-list">
+      <p class="loading">Loading the archive…</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p id="stamp"></p>
+  <p>Not affiliated with ESPN. Standings pulled from the league's own ESPN page.</p>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
