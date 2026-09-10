@@ -76,6 +76,9 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
     pointsAgainst: 0,
     championships: 0,
     runnerUps: 0,
+    playoffAppearances: 0,
+    playoffWins: 0,
+    playoffLosses: 0,
     bestFinish: null,
     teamNames: new Set(),
   });
@@ -83,6 +86,8 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
   for (const { year, data } of seasons) {
     const members = data.members || [];
     const byTeamId = new Map();
+    // How many teams made the playoffs that year, when ESPN tells us.
+    const playoffTeamCount = data.settings?.scheduleSettings?.playoffTeamCount ?? null;
 
     for (const t of data.teams || []) {
       const ownerId = (t.owners && t.owners[0]) || `team-${t.id}`;
@@ -109,12 +114,32 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
         seasonPoints.push({ manager: m.name, year, points: r1(o.pointsFor) });
       }
 
+      if (t.manualPlayoffs) {
+        if (t.manualPlayoffs.made) m.playoffAppearances++;
+        m.playoffWins += t.manualPlayoffs.wins;
+        m.playoffLosses += t.manualPlayoffs.losses;
+      } else if (playoffTeamCount && t.playoffSeed && t.playoffSeed <= playoffTeamCount) {
+        m.playoffAppearances++;
+      }
+
       const finish = t.rankCalculatedFinal ?? null;
       if (finish) {
         if (m.bestFinish === null || finish < m.bestFinish) m.bestFinish = finish;
         if (finish === 1) {
           m.championships++;
-          champions.push({ year, manager: m.name, team: label });
+          champions.push({
+            year,
+            manager: m.name,
+            team: label,
+            logo: t.logo || null,
+            wins: o.wins ?? 0,
+            losses: o.losses ?? 0,
+            ties: o.ties ?? 0,
+            pointsFor: r1(o.pointsFor),
+            playoffRecord: t.manualPlayoffs
+              ? `${t.manualPlayoffs.wins}-${t.manualPlayoffs.losses}`
+              : null,
+          });
         }
         if (finish === 2) m.runnerUps++;
       }
@@ -143,7 +168,26 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
   const matchups = gameRecords.filter((g) => g.isMatchup);
   const best = (arr, cmp) => (arr.length ? [...arr].sort(cmp)[0] : null);
 
-  const table = [...managers.values()]
+  // Manually entered seasons key on name; ESPN seasons key on owner GUID.
+  // Fold together anyone whose resolved name matches so one person is one row.
+  const byName = new Map();
+  for (const m of managers.values()) {
+    const key = m.name.trim().toLowerCase();
+    const first = byName.get(key);
+    if (!first) { byName.set(key, m); continue; }
+    first.seasons.push(...m.seasons);
+    first.wins += m.wins; first.losses += m.losses; first.ties += m.ties;
+    first.pointsFor += m.pointsFor; first.pointsAgainst += m.pointsAgainst;
+    first.championships += m.championships; first.runnerUps += m.runnerUps;
+    first.playoffAppearances += m.playoffAppearances;
+    first.playoffWins += m.playoffWins; first.playoffLosses += m.playoffLosses;
+    if (m.bestFinish !== null && (first.bestFinish === null || m.bestFinish < first.bestFinish)) {
+      first.bestFinish = m.bestFinish;
+    }
+    for (const n of m.teamNames) first.teamNames.add(n);
+  }
+
+  const table = [...byName.values()]
     .map((m) => {
       const games = m.wins + m.losses + m.ties;
       return {
@@ -159,6 +203,12 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
         pointsPerGame: games ? r1(m.pointsFor / games) : 0,
         championships: m.championships,
         runnerUps: m.runnerUps,
+        playoffAppearances: m.playoffAppearances,
+        playoffWins: m.playoffWins,
+        playoffLosses: m.playoffLosses,
+        playoffRate: m.seasons.length
+          ? Math.round((m.playoffAppearances / m.seasons.length) * 100)
+          : 0,
         bestFinish: m.bestFinish,
         teamNames: [...m.teamNames],
       };
@@ -166,7 +216,7 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
     .sort((a, b) => b.winPct - a.winPct || b.wins - a.wins || b.pointsFor - a.pointsFor);
 
   return {
-    yearsCovered: seasons.map((s) => s.year).sort((a, b) => a - b),
+    yearsCovered: [...new Set(seasons.map((s) => s.year))].sort((a, b) => a - b),
     currentYearIncluded: includeCurrentYear,
     managers: table,
     champions: champions.sort((a, b) => b.year - a.year),
