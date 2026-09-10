@@ -54,6 +54,26 @@ Body text. Standard markdown: **bold**, ## headings, lists, links.
 
 Then `npm run build` (or just push — the workflow does it).
 
+## Entering past seasons by hand
+
+`history/seasons.csv` — one row per manager per season. Anything in here is
+used as-is, and takes priority over ESPN for that year. Use it when ESPN
+doesn't have your older seasons, or won't return them.
+
+Columns: `year, manager, wins, losses, ties, points_for, points_against, finish`
+plus optional `team`, `playoff_seed`, `playoff_wins`, `playoff_losses`, and `logo`.
+
+`logo` is an image URL for that team's crest — on ESPN, right-click a team logo
+and choose Copy Image Address. Only the champion's logo is displayed, on the
+front page. Leave it blank and the team's initials show instead.
+
+`finish` is where they placed: 1 is the champion, 2 the runner-up. Leave it
+blank if you don't remember. Use the same spelling of a manager's name every
+year — that's how seasons get tied to one person.
+
+Open it in Numbers, Excel or Google Sheets, fill it in, export as CSV, and
+replace the file.
+
 ## The all-time records page
 
 `history.html` covers every prior season ESPN still has for this league:
