@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
 import { loadHistory, loadSampleHistory, aggregate } from "./history.mjs";
+import { loadManualSeasons } from "./manual-history.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DATA = path.join(ROOT, "data");
@@ -176,9 +177,18 @@ function matchupLabel(g, byId) {
 async function buildHistory(raw) {
   if (SKIP_HISTORY) return null;
 
+  // Seasons you typed in yourself always count, and win ties against ESPN.
+  const { seasons: manual, warnings } = await loadManualSeasons(ROOT);
+  for (const w of warnings) console.log(`  ${w}`);
+  if (manual.length) {
+    console.log(`Manual seasons from history/seasons.csv: ${manual.map((m) => m.year).join(", ")}`);
+  }
+
+  const manualYearSet = new Set(manual.map((m) => m.year));
+
   if (USE_SAMPLE) {
-    const seasons = await loadSampleHistory();
-    return aggregate([...seasons, { year: Number(SEASON), data: raw }], {
+    const seasons = (await loadSampleHistory()).filter((s) => !manualYearSet.has(s.year));
+    return aggregate([...seasons, ...manual, { year: Number(SEASON), data: raw }], {
       includeCurrentYear: Number(SEASON),
     });
   }
@@ -189,22 +199,26 @@ async function buildHistory(raw) {
     ? HISTORY_YEARS.split(",").map((y) => Number(y.trim())).filter(Boolean)
     : (raw.status?.previousSeasons || []).map(Number).sort((a, b) => a - b);
 
-  if (!years.length) {
-    console.log("No prior seasons reported for this league — skipping all-time page.");
+  const toFetch = years.filter((y) => !manualYearSet.has(y));
+
+  if (!toFetch.length && !manual.length) {
+    console.log("No prior seasons found — skipping all-time page.");
     return null;
   }
 
-  console.log(`Fetching ${years.length} prior season(s): ${years.join(", ")}`);
+  let seasons = [];
+  if (toFetch.length) {
+    console.log(`Fetching ${toFetch.length} prior season(s) from ESPN: ${toFetch.join(", ")}`);
+    seasons = await loadHistory({
+      leagueId: LEAGUE_ID,
+      years: toFetch,
+      headers: espnHeaders(),
+      onProgress: (r) =>
+        console.log(r.error ? `  ${r.year}: skipped (${r.error})` : `  ${r.year}: ok`),
+    });
+  }
 
-  const seasons = await loadHistory({
-    leagueId: LEAGUE_ID,
-    years,
-    headers: espnHeaders(),
-    onProgress: (r) =>
-      console.log(r.error ? `  ${r.year}: skipped (${r.error})` : `  ${r.year}: ok`),
-  });
-
-  return aggregate([...seasons, { year: Number(SEASON), data: raw }], {
+  return aggregate([...seasons, ...manual, { year: Number(SEASON), data: raw }], {
     includeCurrentYear: Number(SEASON),
   });
 }
