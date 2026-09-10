@@ -1,10 +1,11 @@
 :root {
-  --ink: #12211e;
-  --pine: #1c4b3c;
-  --paper: #e9ebe4;
-  --flag: #f2c230;
-  --muted: #7c857a;
-  --rule: rgba(18, 33, 30, 0.16);
+  --ink: #101d33;
+  --pine: #14346b;
+  --paper: #f7f8fa;
+  --flag: #c8102e;
+  --on-accent: #ffffff;
+  --muted: #667389;
+  --rule: rgba(16, 29, 51, 0.15);
 
   --measure: 66ch;
   --gutter: clamp(1.25rem, 5vw, 4rem);
@@ -50,7 +51,7 @@ a { color: inherit; text-underline-offset: 0.2em; }
 .masthead__season {
   margin: 0 0 0.4rem;
   font-size: 0.95rem;
-  color: rgba(233, 235, 228, 0.72);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .masthead__name {
@@ -65,7 +66,7 @@ a { color: inherit; text-underline-offset: 0.2em; }
   font-size: 1rem;
 }
 
-.masthead__nav a { text-decoration-color: rgba(233, 235, 228, 0.4); }
+.masthead__nav a { text-decoration-color: rgba(255, 255, 255, 0.45); }
 .masthead__nav a:hover { text-decoration-color: var(--flag); }
 
 /* ---------------------------------------------------------------- layout */
@@ -135,13 +136,16 @@ main > section > h2 {
 /* The one loud thing on the page. */
 .card--shame {
   background: var(--flag);
-  border-color: var(--ink);
+  border-color: var(--flag);
   border-width: 2px;
   padding: clamp(1.5rem, 5vw, 2.25rem) 1.4rem;
 }
 
+.card--shame,
+.card--shame .card__team { color: var(--on-accent); }
+
 .card--shame .card__label,
-.card--shame .card__detail { color: rgba(18, 33, 30, 0.72); }
+.card--shame .card__detail { color: rgba(255, 255, 255, 0.8); }
 
 .card--shame .card__team { font-size: clamp(1.9rem, 7vw, 3.25rem); }
 
@@ -286,7 +290,7 @@ main > section > h2 {
 
 .footer {
   background: var(--ink);
-  color: rgba(233, 235, 228, 0.6);
+  color: rgba(255, 255, 255, 0.65);
   padding: 2rem var(--gutter);
   font-size: 0.9rem;
 }
@@ -343,9 +347,9 @@ main > section > h2 {
 
 /* Pennant shape — notched at the bottom like a rafter banner. */
 .banner {
-  background: var(--pine);
-  color: var(--paper);
-  border: 3px solid var(--flag);
+  background: var(--flag);
+  color: var(--on-accent);
+  border: 3px solid var(--on-accent);
   border-bottom: 0;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
   text-align: center;
@@ -365,7 +369,7 @@ main > section > h2 {
 .banner__year {
   font-family: "Anton", Impact, sans-serif;
   margin: 0 0 0.75rem;
-  color: var(--flag);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1;
 }
 
@@ -386,7 +390,7 @@ main > section > h2 {
 .banner__team {
   margin: 0.15rem 0 0;
   font-style: italic;
-  color: rgba(233, 235, 228, 0.75);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .banner--sm .banner__team { font-size: 0.9rem; }
@@ -401,7 +405,7 @@ main > section > h2 {
 .banner__record {
   margin: 0.3rem 0 0;
   font-size: 0.85rem;
-  color: rgba(233, 235, 228, 0.65);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .champ-past__heading {
@@ -438,7 +442,8 @@ main > section > h2 {
 
 .crest--letters {
   font-family: "Anton", Impact, sans-serif;
-  color: var(--pine);
+  color: var(--flag);
+  background: var(--on-accent);
 }
 
 .crest--lg.crest--letters { font-size: 1.6rem; }
@@ -455,4 +460,8 @@ main > section > h2 {
   border: 1px solid var(--ink);
 }
 
-.tag--bye { background: var(--flag); }
+.tag--bye {
+  background: var(--flag);
+  border-color: var(--flag);
+  color: var(--on-accent);
+}

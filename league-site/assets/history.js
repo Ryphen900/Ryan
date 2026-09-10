@@ -28,6 +28,12 @@ function renderRecords(r) {
     grid.append(card("", "Highest score ever",
       r.highestGame.manager, `${r.highestGame.points} points — ${when(r.highestGame)}`));
   }
+  if (r.highestScoringGame) {
+    const g = r.highestScoringGame;
+    grid.append(card("", "Highest-scoring game ever",
+      `${g.winnerTeam || g.winner} vs ${g.loserTeam || g.loser}`,
+      `${g.total} combined — ${g.winnerPoints}–${g.loserPoints}, ${when(g)}`));
+  }
   if (r.biggestBlowout) {
     grid.append(card("", "Biggest beating ever",
       `${r.biggestBlowout.winner} over ${r.biggestBlowout.loser}`,
