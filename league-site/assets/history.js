@@ -67,6 +67,10 @@ function renderTable(managers) {
     tr.append(el("td", "num", m.winPct.toFixed(3).replace(/^0/, "")));
     tr.append(el("td", "num", String(m.seasons)));
     tr.append(el("td", "num", m.championships ? "★".repeat(m.championships) : "—"));
+    tr.append(el("td", "num",
+      m.playoffAppearances ? `${m.playoffAppearances} of ${m.seasons}` : "—"));
+    tr.append(el("td", "num",
+      m.playoffWins + m.playoffLosses ? `${m.playoffWins}-${m.playoffLosses}` : "—"));
     tr.append(el("td", "num", m.pointsPerGame.toFixed(1)));
     tr.append(el("td", "num", ordinal(m.bestFinish)));
     body.append(tr);
