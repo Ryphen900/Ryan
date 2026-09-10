@@ -1,4 +1,5 @@
-const PLAYOFF_SPOTS = 6;
+const PLAYOFF_SPOTS = 7;
+const BYE_SEEDS = 1; // Top seed sits out round one.
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -48,6 +49,33 @@ function record(c) {
   return c.ties ? `${c.wins}-${c.losses}-${c.ties}` : `${c.wins}-${c.losses}`;
 }
 
+// The final-game line: score plus who they beat, when we know it.
+function titleLine(c) {
+  if (!c.titleGame && !c.runnerUp) return null;
+  const beat = c.runnerUp ? `def. ${c.runnerUp.team}` : "won the final";
+  if (!c.titleGame) return beat;
+  return `${beat} ${c.titleGame.for}–${c.titleGame.against}`;
+}
+
+function banner(c, size) {
+  const b = el("div", `banner banner--${size}`);
+
+  b.append(el("p", "banner__year", String(c.year)));
+  b.append(crest(c, size));
+  b.append(el("p", "banner__manager", c.manager));
+  b.append(el("p", "banner__team", c.team));
+
+  const line = titleLine(c);
+  if (line) b.append(el("p", "banner__final", line));
+
+  const stats = `${record(c)}` +
+    (size === "lg" ? ` · ${c.pointsFor} points` : "") +
+    (c.playoffRecord ? ` · ${c.playoffRecord} in the playoffs` : "");
+  b.append(el("p", "banner__record", stats));
+
+  return b;
+}
+
 function renderChampions(history) {
   const section = $("champs");
   if (!history || !history.champions || !history.champions.length) return;
@@ -58,20 +86,7 @@ function renderChampions(history) {
   const current = $("champ-current");
   current.replaceChildren();
 
-  const banner = el("div", "champ");
-  banner.append(crest(latest, "lg"));
-
-  const text = el("div", "champ__text");
-  text.append(el("p", "champ__year", String(latest.year)));
-  text.append(el("p", "champ__manager", latest.manager));
-  text.append(el("p", "champ__team", latest.team));
-
-  const line = `${record(latest)} regular season · ${latest.pointsFor} points` +
-    (latest.playoffRecord ? ` · ${latest.playoffRecord} in the playoffs` : "");
-  text.append(el("p", "champ__record", line));
-
-  banner.append(text);
-  current.append(banner);
+  current.append(banner(latest, "lg"));
 
   const past = $("champ-past");
   past.replaceChildren();
@@ -82,11 +97,7 @@ function renderChampions(history) {
   const list = el("ul", "champ-past__list");
   for (const c of rest) {
     const li = el("li", "champ-past__item");
-    li.append(crest(c, "sm"));
-    const t = el("div", "champ-past__text");
-    t.append(el("p", "champ-past__year", `${c.year} — ${c.manager}`));
-    t.append(el("p", "champ-past__meta", `${c.team} · ${record(c)}`));
-    li.append(t);
+    li.append(banner(c, "sm"));
     list.append(li);
   }
   past.append(list);
@@ -168,7 +179,10 @@ function renderLadder(league) {
     if (i === PLAYOFF_SPOTS - 1) tr.className = "cutline";
 
     tr.append(el("td", "col-rank", String(i + 1)));
-    tr.append(el("td", "col-team", t.name));
+    const team = el("td", "col-team");
+    team.append(document.createTextNode(t.name));
+    if (i < BYE_SEEDS) team.append(el("span", "tag tag--bye", "bye"));
+    tr.append(team);
     tr.append(el("td", "", record(t)));
     tr.append(el("td", "num", t.pointsFor.toFixed(1)));
     tr.append(el("td", "num", t.pointsAgainst.toFixed(1)));
@@ -177,7 +191,8 @@ function renderLadder(league) {
   });
 
   $("ladder-note").textContent =
-    `Dashed line is the playoff cut — top ${PLAYOFF_SPOTS} are in.`;
+    `Dashed line is the playoff cut — top ${PLAYOFF_SPOTS} make the playoffs. ` +
+    `The ${BYE_SEEDS === 1 ? "top seed gets a first-round bye" : `top ${BYE_SEEDS} seeds get first-round byes`}.`;
 }
 
 // ------------------------------------------------------------------- scores
@@ -218,7 +233,7 @@ function renderArchive(issues) {
 
   if (!issues.length) {
     wrap.append(
-      el("p", "loading", "No issues yet. Drop a markdown file in /newsletters to start the archive.")
+      el("p", "loading", "First issue lands after Week 1. Check back Tuesday.")
     );
     return;
   }

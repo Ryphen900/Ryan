@@ -337,60 +337,71 @@ main > section > h2 {
 
 /* ------------------------------------------------------------- champions */
 
-.champ {
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 4vw, 1.75rem);
-  padding: clamp(1.25rem, 4vw, 1.75rem);
-  border: 2px solid var(--ink);
-  background: var(--flag);
-  flex-wrap: wrap;
+#champs { text-align: center; }
+
+#champs > h2 { margin-bottom: 1.5rem; }
+
+/* Pennant shape — notched at the bottom like a rafter banner. */
+.banner {
+  background: var(--pine);
+  color: var(--paper);
+  border: 3px solid var(--flag);
+  border-bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+  text-align: center;
+  margin: 0 auto;
 }
 
-.crest {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--paper);
-  object-fit: cover;
+.banner--lg {
+  width: min(22rem, 100%);
+  padding: 1.5rem 1.25rem 3.5rem;
 }
 
-.crest--lg { width: clamp(4.5rem, 16vw, 6.5rem); height: clamp(4.5rem, 16vw, 6.5rem); }
-.crest--sm { width: 2.5rem; height: 2.5rem; }
+.banner--sm {
+  width: 100%;
+  padding: 1rem 0.75rem 2.25rem;
+}
 
-.crest--letters {
+.banner__year {
   font-family: "Anton", Impact, sans-serif;
-  color: var(--pine);
-  border: 2px solid var(--ink);
-}
-
-.crest--lg.crest--letters { font-size: 1.75rem; }
-.crest--sm.crest--letters { font-size: 0.95rem; }
-
-.champ__text { flex: 1 1 14rem; }
-
-.champ__year {
-  font-family: "Anton", Impact, sans-serif;
-  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  margin: 0 0 0.75rem;
+  color: var(--flag);
   line-height: 1;
-  margin: 0;
-  color: rgba(18, 33, 30, 0.55);
 }
 
-.champ__manager {
+.banner--lg .banner__year { font-size: 2.5rem; }
+.banner--sm .banner__year { font-size: 1.5rem; }
+
+.banner .crest { margin: 0 auto 0.75rem; }
+
+.banner__manager {
   font-family: "Anton", Impact, sans-serif;
-  font-size: clamp(1.6rem, 6vw, 2.75rem);
   line-height: 1.05;
-  margin: 0.15rem 0 0;
+  margin: 0;
 }
 
-.champ__team { margin: 0.2rem 0 0; font-style: italic; }
+.banner--lg .banner__manager { font-size: 1.9rem; }
+.banner--sm .banner__manager { font-size: 1.15rem; }
 
-.champ__record {
-  margin: 0.5rem 0 0;
-  font-size: 0.95rem;
-  color: rgba(18, 33, 30, 0.72);
+.banner__team {
+  margin: 0.15rem 0 0;
+  font-style: italic;
+  color: rgba(233, 235, 228, 0.75);
+}
+
+.banner--sm .banner__team { font-size: 0.9rem; }
+
+.banner__final {
+  margin: 0.6rem 0 0;
+  font-weight: 600;
+}
+
+.banner--sm .banner__final { font-size: 0.85rem; }
+
+.banner__record {
+  margin: 0.3rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(233, 235, 228, 0.65);
 }
 
 .champ-past__heading {
@@ -398,7 +409,7 @@ main > section > h2 {
   font-weight: 600;
   font-size: 1rem;
   color: var(--muted);
-  margin: 1.75rem 0 0.75rem;
+  margin: 2.5rem 0 1rem;
 }
 
 .champ-past__list {
@@ -406,22 +417,42 @@ main > section > h2 {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.6rem;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  max-width: 42rem;
+  margin-inline: auto;
 }
 
-.champ-past__item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0;
-  border-top: 1px solid var(--rule);
+.champ-past__item { display: block; }
+
+.crest {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper);
+  object-fit: cover;
 }
 
-.champ-past__year { margin: 0; font-weight: 600; }
+.crest--lg { width: 5rem; height: 5rem; }
+.crest--sm { width: 3rem; height: 3rem; }
 
-.champ-past__meta {
-  margin: 0.1rem 0 0;
-  font-size: 0.9rem;
-  color: var(--muted);
+.crest--letters {
+  font-family: "Anton", Impact, sans-serif;
+  color: var(--pine);
 }
+
+.crest--lg.crest--letters { font-size: 1.6rem; }
+.crest--sm.crest--letters { font-size: 1rem; }
+
+.tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: middle;
+  border: 1px solid var(--ink);
+}
+
+.tag--bye { background: var(--flag); }
