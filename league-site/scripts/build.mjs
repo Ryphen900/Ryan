@@ -5,6 +5,7 @@ import { marked } from "marked";
 import { loadHistory, loadSampleHistory, aggregate } from "./history.mjs";
 import { loadManualSeasons } from "./manual-history.mjs";
 import { loadManualGames } from "./manual-games.mjs";
+import { loadManualPlayers, bestPlayers } from "./manual-players.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DATA = path.join(ROOT, "data");
@@ -181,7 +182,11 @@ async function buildHistory(raw) {
   // Seasons you typed in yourself always count, and win ties against ESPN.
   const { seasons: manual, warnings } = await loadManualSeasons(ROOT);
   const { games: manualGames, warnings: gameWarnings } = await loadManualGames(ROOT);
-  for (const w of [...warnings, ...gameWarnings]) console.log(`  ${w}`);
+  const { players: manualPlayers, warnings: playerWarnings } = await loadManualPlayers(ROOT);
+  for (const w of [...warnings, ...gameWarnings, ...playerWarnings]) console.log(`  ${w}`);
+  if (manualPlayers.length) {
+    console.log(`Player performances from history/players.csv: ${manualPlayers.length}`);
+  }
   if (manualGames.length) {
     console.log(`Manual games from history/games.csv: ${manualGames.length}`);
   }
@@ -277,6 +282,7 @@ async function main() {
 
   const history = await buildHistory(raw);
   if (history) {
+    Object.assign(history.records, bestPlayers(await loadManualPlayers(ROOT).then((r) => r.players)));
     await writeFile(path.join(DATA, "history.json"), JSON.stringify(history, null, 2));
   }
 
