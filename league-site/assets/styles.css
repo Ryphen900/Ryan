@@ -334,3 +334,94 @@ main > section > h2 {
 }
 
 .alias__row strong { color: var(--ink); }
+
+/* ------------------------------------------------------------- champions */
+
+.champ {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 1.75rem);
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border: 2px solid var(--ink);
+  background: var(--flag);
+  flex-wrap: wrap;
+}
+
+.crest {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--paper);
+  object-fit: cover;
+}
+
+.crest--lg { width: clamp(4.5rem, 16vw, 6.5rem); height: clamp(4.5rem, 16vw, 6.5rem); }
+.crest--sm { width: 2.5rem; height: 2.5rem; }
+
+.crest--letters {
+  font-family: "Anton", Impact, sans-serif;
+  color: var(--pine);
+  border: 2px solid var(--ink);
+}
+
+.crest--lg.crest--letters { font-size: 1.75rem; }
+.crest--sm.crest--letters { font-size: 0.95rem; }
+
+.champ__text { flex: 1 1 14rem; }
+
+.champ__year {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  line-height: 1;
+  margin: 0;
+  color: rgba(18, 33, 30, 0.55);
+}
+
+.champ__manager {
+  font-family: "Anton", Impact, sans-serif;
+  font-size: clamp(1.6rem, 6vw, 2.75rem);
+  line-height: 1.05;
+  margin: 0.15rem 0 0;
+}
+
+.champ__team { margin: 0.2rem 0 0; font-style: italic; }
+
+.champ__record {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: rgba(18, 33, 30, 0.72);
+}
+
+.champ-past__heading {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--muted);
+  margin: 1.75rem 0 0.75rem;
+}
+
+.champ-past__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+.champ-past__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.champ-past__year { margin: 0; font-weight: 600; }
+
+.champ-past__meta {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
