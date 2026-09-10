@@ -62,6 +62,7 @@ const r1 = (n) => Math.round((n ?? 0) * 10) / 10;
 export function aggregate(seasons, { includeCurrentYear = null } = {}) {
   const managers = new Map();
   const champions = [];
+  const runnersUp = new Map(); // year -> who lost the final
   const gameRecords = [];
   const seasonPoints = [];
 
@@ -118,7 +119,12 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
         if (t.manualPlayoffs.made) m.playoffAppearances++;
         m.playoffWins += t.manualPlayoffs.wins;
         m.playoffLosses += t.manualPlayoffs.losses;
-      } else if (playoffTeamCount && t.playoffSeed && t.playoffSeed <= playoffTeamCount) {
+      } else if (
+        year !== includeCurrentYear &&
+        playoffTeamCount && t.playoffSeed && t.playoffSeed <= playoffTeamCount
+      ) {
+        // Seeds exist before a season is played, so an in-progress year would
+        // otherwise hand everyone a phantom playoff appearance.
         m.playoffAppearances++;
       }
 
@@ -136,12 +142,16 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
             losses: o.losses ?? 0,
             ties: o.ties ?? 0,
             pointsFor: r1(o.pointsFor),
+            titleGame: t.titleGame || null,
             playoffRecord: t.manualPlayoffs
               ? `${t.manualPlayoffs.wins}-${t.manualPlayoffs.losses}`
               : null,
           });
         }
-        if (finish === 2) m.runnerUps++;
+        if (finish === 2) {
+          m.runnerUps++;
+          runnersUp.set(year, { manager: m.name, team: label });
+        }
       }
     }
 
@@ -170,9 +180,11 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
 
   // Manually entered seasons key on name; ESPN seasons key on owner GUID.
   // Fold together anyone whose resolved name matches so one person is one row.
+  const nameKey = (n) => n.toLowerCase().replace(/[^a-z0-9]/g, "");
+
   const byName = new Map();
   for (const m of managers.values()) {
-    const key = m.name.trim().toLowerCase();
+    const key = nameKey(m.name);
     const first = byName.get(key);
     if (!first) { byName.set(key, m); continue; }
     first.seasons.push(...m.seasons);
@@ -219,7 +231,9 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
     yearsCovered: [...new Set(seasons.map((s) => s.year))].sort((a, b) => a - b),
     currentYearIncluded: includeCurrentYear,
     managers: table,
-    champions: champions.sort((a, b) => b.year - a.year),
+    champions: champions
+      .map((c) => ({ ...c, runnerUp: runnersUp.get(c.year) || null }))
+      .sort((a, b) => b.year - a.year),
     records: {
       highestGame: best(scores, (a, b) => b.points - a.points),
       lowestGame: best(scores, (a, b) => a.points - b.points),

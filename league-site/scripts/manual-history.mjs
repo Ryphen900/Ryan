@@ -85,6 +85,9 @@ export async function loadManualSeasons(root) {
       },
       rankCalculatedFinal: num(get(row, "finish")) || null,
       playoffSeed: num(get(row, "playoff_seed")) || null,
+      titleGame: num(get(row, "title_game_for"))
+        ? { for: num(get(row, "title_game_for")), against: num(get(row, "title_game_against")) }
+        : null,
       // Manually stated playoff record; ESPN seasons derive it instead.
       manualPlayoffs: {
         wins: num(get(row, "playoff_wins")),
