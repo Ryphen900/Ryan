@@ -74,6 +74,17 @@ year — that's how seasons get tied to one person.
 Open it in Numbers, Excel or Google Sheets, fill it in, export as CSV, and
 replace the file.
 
+## Entering individual games
+
+`history/games.csv` is optional and only matters for the record book. ESPN gives
+us game-by-game scores for the current season only, so any older game worth
+recording — a league-record score, a famous blowout — gets a row here.
+
+Columns: `year, week, manager, team, points, opp_manager, opp_team, opp_points`.
+
+One row per game, not per team. You don't need every game — only ones that might
+hold a record.
+
 ## The all-time records page
 
 `history.html` covers every prior season ESPN still has for this league:
