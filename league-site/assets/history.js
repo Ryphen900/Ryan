@@ -20,9 +20,8 @@ function renderRecords(r) {
 
   const when = (x) => `${x.year}, week ${x.week}`;
 
-  
   if (r.highestGame) {
-    grid.append(card("", "Highest score ever",
+    grid.append(card("card--shame", "Highest score ever",
       r.highestGame.manager, `${r.highestGame.points} points — ${when(r.highestGame)}`));
   }
   if (r.highestScoringGame) {
@@ -31,16 +30,9 @@ function renderRecords(r) {
       `${g.winnerTeam || g.winner} vs ${g.loserTeam || g.loser}`,
       `${g.total} combined — ${g.winnerPoints}–${g.loserPoints}, ${when(g)}`));
   }
-  
-  
-  }
   if (r.bestSeason) {
     grid.append(card("", "Most points in a season",
       r.bestSeason.manager, `${r.bestSeason.points} in ${r.bestSeason.year}`));
-  }
-  if (r.worstSeason) {
-    grid.append(card("", "Fewest points in a season",
-      r.worstSeason.manager, `${r.worstSeason.points} in ${r.worstSeason.year}`));
   }
 }
 
