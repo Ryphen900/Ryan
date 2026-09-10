@@ -59,7 +59,7 @@ function teamLabel(t) {
 
 const r1 = (n) => Math.round((n ?? 0) * 10) / 10;
 
-export function aggregate(seasons, { includeCurrentYear = null } = {}) {
+export function aggregate(seasons, { includeCurrentYear = null, manualGames = [] } = {}) {
   const managers = new Map();
   const champions = [];
   const runnersUp = new Map(); // year -> who lost the final
@@ -169,9 +169,30 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
         week: g.matchupPeriodId,
         winner: byTeamId.get(homeWon ? g.home.teamId : g.away.teamId)?.name,
         loser: byTeamId.get(homeWon ? g.away.teamId : g.home.teamId)?.name,
+        winnerPoints: r1(homeWon ? g.home.totalPoints : g.away.totalPoints),
+        loserPoints: r1(homeWon ? g.away.totalPoints : g.home.totalPoints),
         isMatchup: true,
       });
     }
+  }
+
+  for (const g of manualGames) {
+    for (const side of [g.a, g.b]) {
+      gameRecords.push({ manager: side.manager, year: g.year, week: g.week, points: side.points });
+    }
+    const aWon = g.a.points >= g.b.points;
+    gameRecords.push({
+      margin: r1(Math.abs(g.a.points - g.b.points)),
+      year: g.year,
+      week: g.week,
+      winner: (aWon ? g.a : g.b).manager,
+      loser: (aWon ? g.b : g.a).manager,
+      winnerTeam: (aWon ? g.a : g.b).team,
+      loserTeam: (aWon ? g.b : g.a).team,
+      winnerPoints: r1((aWon ? g.a : g.b).points),
+      loserPoints: r1((aWon ? g.b : g.a).points),
+      isMatchup: true,
+    });
   }
 
   const scores = gameRecords.filter((g) => !g.isMatchup);
@@ -238,6 +259,10 @@ export function aggregate(seasons, { includeCurrentYear = null } = {}) {
       highestGame: best(scores, (a, b) => b.points - a.points),
       lowestGame: best(scores, (a, b) => a.points - b.points),
       biggestBlowout: best(matchups, (a, b) => b.margin - a.margin),
+      highestScoringGame: best(
+        matchups.map((m) => ({ ...m, total: r1(m.winnerPoints + m.loserPoints) })),
+        (a, b) => b.total - a.total
+      ),
       closestGame: best(matchups, (a, b) => a.margin - b.margin),
       bestSeason: best(seasonPoints, (a, b) => b.points - a.points),
       worstSeason: best(seasonPoints, (a, b) => a.points - b.points),

@@ -4,6 +4,7 @@ import path from "node:path";
 import { marked } from "marked";
 import { loadHistory, loadSampleHistory, aggregate } from "./history.mjs";
 import { loadManualSeasons } from "./manual-history.mjs";
+import { loadManualGames } from "./manual-games.mjs";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const DATA = path.join(ROOT, "data");
@@ -179,7 +180,11 @@ async function buildHistory(raw) {
 
   // Seasons you typed in yourself always count, and win ties against ESPN.
   const { seasons: manual, warnings } = await loadManualSeasons(ROOT);
-  for (const w of warnings) console.log(`  ${w}`);
+  const { games: manualGames, warnings: gameWarnings } = await loadManualGames(ROOT);
+  for (const w of [...warnings, ...gameWarnings]) console.log(`  ${w}`);
+  if (manualGames.length) {
+    console.log(`Manual games from history/games.csv: ${manualGames.length}`);
+  }
   if (manual.length) {
     console.log(`Manual seasons from history/seasons.csv: ${manual.map((m) => m.year).join(", ")}`);
   }
@@ -190,6 +195,7 @@ async function buildHistory(raw) {
     const seasons = (await loadSampleHistory()).filter((s) => !manualYearSet.has(s.year));
     return aggregate([...seasons, ...manual, { year: Number(SEASON), data: raw }], {
       includeCurrentYear: Number(SEASON),
+      manualGames,
     });
   }
 
@@ -220,6 +226,7 @@ async function buildHistory(raw) {
 
   return aggregate([...seasons, ...manual, { year: Number(SEASON), data: raw }], {
     includeCurrentYear: Number(SEASON),
+    manualGames,
   });
 }
 
