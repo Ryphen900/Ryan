@@ -20,10 +20,7 @@ function renderRecords(r) {
 
   const when = (x) => `${x.year}, week ${x.week}`;
 
-  if (r.lowestGame) {
-    grid.append(card("card--shame", "Worst score in league history",
-      r.lowestGame.manager, `${r.lowestGame.points} points — ${when(r.lowestGame)}. It is written down now.`));
-  }
+  
   if (r.highestGame) {
     grid.append(card("", "Highest score ever",
       r.highestGame.manager, `${r.highestGame.points} points — ${when(r.highestGame)}`));
@@ -34,16 +31,8 @@ function renderRecords(r) {
       `${g.winnerTeam || g.winner} vs ${g.loserTeam || g.loser}`,
       `${g.total} combined — ${g.winnerPoints}–${g.loserPoints}, ${when(g)}`));
   }
-  if (r.biggestBlowout) {
-    grid.append(card("", "Biggest beating ever",
-      `${r.biggestBlowout.winner} over ${r.biggestBlowout.loser}`,
-      `${r.biggestBlowout.margin}-point margin — ${when(r.biggestBlowout)}`));
-  }
-  if (r.closestGame) {
-    grid.append(card("", "Closest game ever",
-      `${r.closestGame.winner} over ${r.closestGame.loser}`,
-      r.closestGame.margin === 0 ? `A dead tie — ${when(r.closestGame)}`
-        : `Decided by ${r.closestGame.margin} — ${when(r.closestGame)}`));
+  
+  
   }
   if (r.bestSeason) {
     grid.append(card("", "Most points in a season",
