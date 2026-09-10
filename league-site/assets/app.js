@@ -18,6 +18,80 @@ function record(t) {
   return t.ties ? `${t.wins}-${t.losses}-${t.ties}` : `${t.wins}-${t.losses}`;
 }
 
+// ---------------------------------------------------------------- champions
+
+// Falls back to initials in a disc when a team has no logo URL.
+function crest(champ, size) {
+  if (champ.logo) {
+    const img = el("img", `crest crest--${size}`);
+    img.src = champ.logo;
+    img.alt = "";
+    img.loading = "lazy";
+    // A dead image URL shouldn't leave a broken icon on the page.
+    img.addEventListener("error", () => img.replaceWith(initials(champ, size)));
+    return img;
+  }
+  return initials(champ, size);
+}
+
+function initials(champ, size) {
+  const letters = champ.team
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+  return el("span", `crest crest--${size} crest--letters`, letters || "?");
+}
+
+function record(c) {
+  return c.ties ? `${c.wins}-${c.losses}-${c.ties}` : `${c.wins}-${c.losses}`;
+}
+
+function renderChampions(history) {
+  const section = $("champs");
+  if (!history || !history.champions || !history.champions.length) return;
+
+  const [latest, ...rest] = history.champions;
+  section.hidden = false;
+
+  const current = $("champ-current");
+  current.replaceChildren();
+
+  const banner = el("div", "champ");
+  banner.append(crest(latest, "lg"));
+
+  const text = el("div", "champ__text");
+  text.append(el("p", "champ__year", String(latest.year)));
+  text.append(el("p", "champ__manager", latest.manager));
+  text.append(el("p", "champ__team", latest.team));
+
+  const line = `${record(latest)} regular season · ${latest.pointsFor} points` +
+    (latest.playoffRecord ? ` · ${latest.playoffRecord} in the playoffs` : "");
+  text.append(el("p", "champ__record", line));
+
+  banner.append(text);
+  current.append(banner);
+
+  const past = $("champ-past");
+  past.replaceChildren();
+  if (!rest.length) return;
+
+  past.append(el("h3", "champ-past__heading", "Previous winners"));
+
+  const list = el("ul", "champ-past__list");
+  for (const c of rest) {
+    const li = el("li", "champ-past__item");
+    li.append(crest(c, "sm"));
+    const t = el("div", "champ-past__text");
+    t.append(el("p", "champ-past__year", `${c.year} — ${c.manager}`));
+    t.append(el("p", "champ-past__meta", `${c.team} · ${record(c)}`));
+    li.append(t);
+    list.append(li);
+  }
+  past.append(list);
+}
+
 // ------------------------------------------------------------------ verdict
 
 function renderVerdict(league) {
@@ -170,15 +244,17 @@ function renderArchive(issues) {
 
 async function init() {
   try {
-    const [league, issues] = await Promise.all([
+    const [league, issues, history] = await Promise.all([
       getJSON("data/league.json"),
       getJSON("data/newsletters.json").catch(() => []),
+      getJSON("data/history.json").catch(() => null),
     ]);
 
     document.title = `${league.leagueName} — League HQ`;
     $("league-name").textContent = league.leagueName;
     $("season").textContent = `${league.season} season`;
 
+    renderChampions(history);
     renderVerdict(league);
     renderLadder(league);
     renderScores(league);
