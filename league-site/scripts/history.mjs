@@ -65,6 +65,7 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
   const runnersUp = new Map(); // year -> who lost the final
   const gameRecords = [];
   const seasonPoints = [];
+  const seasonRecords = [];
 
   const blank = (id, name) => ({
     id,
@@ -110,9 +111,19 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
       m.pointsFor += o.pointsFor ?? 0;
       m.pointsAgainst += o.pointsAgainst ?? 0;
 
-      // A season still in progress can't fairly compete for a points total.
+      // A season still in progress can't fairly compete for a points total
+      // or a win-loss record.
       if (year !== includeCurrentYear) {
         seasonPoints.push({ manager: m.name, year, points: r1(o.pointsFor) });
+
+        const w = o.wins ?? 0, l = o.losses ?? 0, t = o.ties ?? 0;
+        if (w + l + t > 0) {
+          seasonRecords.push({
+            manager: m.name, team: label, year,
+            wins: w, losses: l, ties: t,
+            pct: w / (w + l + t),
+          });
+        }
       }
 
       if (t.manualPlayoffs) {
@@ -264,6 +275,8 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
         (a, b) => b.total - a.total
       ),
       closestGame: best(matchups, (a, b) => a.margin - b.margin),
+      bestRecord: best(seasonRecords, (a, b) => b.pct - a.pct || b.wins - a.wins),
+      worstRecord: best(seasonRecords, (a, b) => a.pct - b.pct || a.wins - b.wins),
       bestSeason: best(seasonPoints, (a, b) => b.points - a.points),
       worstSeason: best(seasonPoints, (a, b) => a.points - b.points),
     },
