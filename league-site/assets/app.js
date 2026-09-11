@@ -45,10 +45,6 @@ function initials(champ, size) {
   return el("span", `crest crest--${size} crest--letters`, letters || "?");
 }
 
-function record(c) {
-  return c.ties ? `${c.wins}-${c.losses}-${c.ties}` : `${c.wins}-${c.losses}`;
-}
-
 // The final-game line: score plus who they beat, when we know it.
 function titleLine(c) {
   if (!c.titleGame && !c.runnerUp) return null;
@@ -181,7 +177,7 @@ function renderLadder(league) {
     tr.append(el("td", "col-rank", String(i + 1)));
     const team = el("td", "col-team");
     team.append(document.createTextNode(t.name));
-    if (i < BYE_SEEDS) team.append(el("span", "tag tag--bye", "bye"));
+    if (i < BYE_SEEDS) team.append(el("span", "tag tag--bye", "BYE"));
     tr.append(team);
     tr.append(el("td", "", record(t)));
     tr.append(el("td", "num", t.pointsFor.toFixed(1)));
