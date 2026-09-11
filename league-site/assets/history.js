@@ -33,12 +33,14 @@ function renderRecords(r) {
   const when = (x) => `${x.year}, week ${x.week}`;
 
   if (r.highestGame) {
+    const g = r.highestGame;
     grid.append(card("", "Highest score ever",
-      r.highestGame.manager, `${r.highestGame.points} points — ${when(r.highestGame)}`));
+      g.team || g.manager, `${g.points} points — ${g.manager}, ${when(g)}`));
   }
   if (r.lowestGame) {
+    const g = r.lowestGame;
     grid.append(card("", "Fewest points in a game",
-      r.lowestGame.manager, `${r.lowestGame.points} points — ${when(r.lowestGame)}`));
+      g.team || g.manager, `${g.points} points — ${g.manager}, ${when(g)}`));
   }
   if (r.highestScoringGame) {
     const g = r.highestScoringGame;
@@ -71,8 +73,9 @@ function renderRecords(r) {
       `${showRecord(r.worstRecord)} — ${r.worstRecord.manager}, ${r.worstRecord.year}`));
   }
   if (r.bestSeason) {
+    const b = r.bestSeason;
     grid.append(card("", "Most points in a season",
-      r.bestSeason.manager, `${r.bestSeason.points} in ${r.bestSeason.year}`));
+      b.team || b.manager, `${b.points} points — ${b.manager}, ${b.year}`));
   }
 }
 
