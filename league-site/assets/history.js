@@ -58,6 +58,18 @@ function renderRecords(r) {
       playerHeadline(p),
       `${playerDetail(p)}${p.year ? ` — ${p.year}` : ""}`));
   }
+  const showRecord = (rec) => rec.ties ? `${rec.wins}-${rec.losses}-${rec.ties}` : `${rec.wins}-${rec.losses}`;
+
+  if (r.bestRecord) {
+    grid.append(card("", "Best regular season record",
+      r.bestRecord.team,
+      `${showRecord(r.bestRecord)} — ${r.bestRecord.manager}, ${r.bestRecord.year}`));
+  }
+  if (r.worstRecord) {
+    grid.append(card("", "Worst regular season record",
+      r.worstRecord.team,
+      `${showRecord(r.worstRecord)} — ${r.worstRecord.manager}, ${r.worstRecord.year}`));
+  }
   if (r.bestSeason) {
     grid.append(card("", "Most points in a season",
       r.bestSeason.manager, `${r.bestSeason.points} in ${r.bestSeason.year}`));
@@ -75,6 +87,7 @@ const SORTS = [
   { key: (m) => m.championships },
   { key: (m) => m.playoffAppearances },
   { key: (m) => m.playoffWins },
+  { key: (m) => m.pointsPerGame },
   { key: (m) => m.bestFinish, asc: true },
 ];
 
