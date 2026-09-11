@@ -88,6 +88,7 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
   for (const { year, data } of seasons) {
     const members = data.members || [];
     const byTeamId = new Map();
+    const teamLabels = new Map();
     // How many teams made the playoffs that year, when ESPN tells us.
     const playoffTeamCount = data.settings?.scheduleSettings?.playoffTeamCount ?? null;
 
@@ -102,6 +103,7 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
       if (m.name.startsWith("Team ") && !name.startsWith("Team ")) m.name = name;
       m.teamNames.add(label);
       byTeamId.set(t.id, m);
+      teamLabels.set(t.id, label);
 
       const o = t.record?.overall || {};
       m.seasons.push(year);
@@ -114,7 +116,7 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
       // A season still in progress can't fairly compete for a points total
       // or a win-loss record.
       if (year !== includeCurrentYear) {
-        seasonPoints.push({ manager: m.name, year, points: r1(o.pointsFor) });
+        seasonPoints.push({ manager: m.name, team: label, year, points: r1(o.pointsFor) });
 
         const w = o.wins ?? 0, l = o.losses ?? 0, t = o.ties ?? 0;
         if (w + l + t > 0) {
@@ -170,7 +172,13 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
       if (!g.home || !g.away || g.winner === "UNDECIDED") continue;
       for (const side of [g.home, g.away]) {
         const m = byTeamId.get(side.teamId);
-        if (m) gameRecords.push({ manager: m.name, year, week: g.matchupPeriodId, points: r1(side.totalPoints) });
+        if (m) gameRecords.push({
+          manager: m.name,
+          team: teamLabels.get(side.teamId),
+          year,
+          week: g.matchupPeriodId,
+          points: r1(side.totalPoints),
+        });
       }
       const margin = Math.abs(g.home.totalPoints - g.away.totalPoints);
       const homeWon = g.home.totalPoints >= g.away.totalPoints;
@@ -189,7 +197,13 @@ export function aggregate(seasons, { includeCurrentYear = null, manualGames = []
 
   for (const g of manualGames) {
     for (const side of [g.a, g.b]) {
-      gameRecords.push({ manager: side.manager, year: g.year, week: g.week, points: side.points });
+      gameRecords.push({
+        manager: side.manager,
+        team: side.team,
+        year: g.year,
+        week: g.week,
+        points: side.points,
+      });
     }
     const aWon = g.a.points >= g.b.points;
     gameRecords.push({
