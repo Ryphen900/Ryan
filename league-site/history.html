@@ -17,6 +17,7 @@
   <nav class="masthead__nav">
     <a href="index.html">This season</a>
     <a href="#alltime">All-time table</a>
+    <a href="#h2h">Head to head</a>
     <a href="#titles">Champions</a>
   </nav>
 </header>
@@ -53,7 +54,31 @@
         </tbody>
       </table>
     </div>
-    <p class="ladder__note">Sorted by win percentage. Managers are tracked by ESPN account, so a name change doesn't split someone's record.</p>
+    <p class="ladder__note">Sorted by win percentage. One row per manager, so changing your team name doesn't split your record.</p>
+  </section>
+
+  <section class="h2h" id="h2h" aria-labelledby="h2h-heading" hidden>
+    <h2 id="h2h-heading">Head to head</h2>
+    <p class="h2h__intro">
+      <label for="h2h-pick">Show every matchup for</label>
+      <select id="h2h-pick"></select>
+    </p>
+    <div class="ladder__scroll">
+      <table class="ladder__table">
+        <thead>
+          <tr>
+            <th scope="col" class="col-team">Opponent</th>
+            <th scope="col">Overall</th>
+            <th scope="col">Playoffs</th>
+            <th scope="col" class="num">Meetings</th>
+            <th scope="col" class="num">Points for</th>
+            <th scope="col" class="num">Points against</th>
+            <th scope="col">Last meeting</th>
+          </tr>
+        </thead>
+        <tbody id="h2h-body"></tbody>
+      </table>
+    </div>
   </section>
 
   <section class="titles" id="titles" aria-labelledby="titles-heading">
