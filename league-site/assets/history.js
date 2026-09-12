@@ -194,6 +194,70 @@ function drawRows() {
   });
 }
 
+// ---------------------------------------------------------- head to head
+
+let h2hData = {};
+
+function renderH2H(headToHead, managers) {
+  h2hData = headToHead || {};
+  const names = Object.keys(h2hData);
+  if (!names.length) return;
+
+  $("h2h").hidden = false;
+
+  // Order the picker the way the table above is ordered, not alphabetically.
+  const ordered = managers.map((m) => m.name).filter((n) => h2hData[n]);
+  for (const n of names) if (!ordered.includes(n)) ordered.push(n);
+
+  const pick = $("h2h-pick");
+  pick.replaceChildren();
+  for (const n of ordered) {
+    const o = el("option", null, n);
+    o.value = n;
+    pick.append(o);
+  }
+
+  pick.addEventListener("change", () => drawH2H(pick.value));
+  drawH2H(ordered[0]);
+}
+
+function drawH2H(name) {
+  const body = $("h2h-body");
+  body.replaceChildren();
+
+  const rows = h2hData[name] || [];
+  if (!rows.length) {
+    const tr = el("tr");
+    const td = el("td", "loading", "No games on record yet.");
+    td.colSpan = 7;
+    tr.append(td);
+    body.append(tr);
+    return;
+  }
+
+  for (const r of rows) {
+    const played = r.wins + r.losses + r.ties;
+    const last = r.meetings[0];
+
+    const tr = el("tr");
+    tr.append(el("td", "col-team", r.opponent));
+    tr.append(el("td", "", r.ties ? `${r.wins}-${r.losses}-${r.ties}` : `${r.wins}-${r.losses}`));
+
+    const po = (r.poWins || 0) + (r.poLosses || 0) + (r.poTies || 0);
+    tr.append(el("td", "", po
+      ? (r.poTies ? `${r.poWins}-${r.poLosses}-${r.poTies}` : `${r.poWins}-${r.poLosses}`)
+      : "—"));
+
+    tr.append(el("td", "num", String(played)));
+    tr.append(el("td", "num", r.pointsFor.toFixed(1)));
+    tr.append(el("td", "num", r.pointsAgainst.toFixed(1)));
+    tr.append(el("td", "", last
+      ? `${last.for}–${last.against} · ${last.year}${last.week ? ` wk ${last.week}` : ""}${last.playoff ? " (playoffs)" : ""}`
+      : "—"));
+    body.append(tr);
+  }
+}
+
 function renderTitles(champions) {
   const list = $("titles-list");
   const section = $("titles");
@@ -238,6 +302,7 @@ async function init() {
 
     renderRecords(h.records);
     renderTable(h.managers);
+    renderH2H(h.headToHead, h.managers);
     renderTitles(h.champions);
     renderAliases(h.managers);
 

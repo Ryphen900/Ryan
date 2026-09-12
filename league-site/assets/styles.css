@@ -465,3 +465,23 @@ main > section > h2 {
   border-color: var(--flag);
   color: var(--on-accent);
 }
+
+/* ------------------------------------------------------- head to head */
+
+.h2h__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.h2h__intro select {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--ink);
+  background: var(--on-accent);
+  color: var(--ink);
+  max-width: 100%;
+}
