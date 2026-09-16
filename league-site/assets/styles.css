@@ -178,7 +178,16 @@ main > section > h2 {
 .ladder__table tbody tr { border-bottom: 1px solid var(--rule); }
 
 .ladder__table .num,
-.ladder__table td.num { text-align: right; padding-right: 0; }
+.ladder__table td.num { text-align: right; padding-right: 1.5rem; }
+
+/* Last column carries no trailing gap, and gets a rule to set it apart. */
+.ladder__table tr > *:last-child {
+  padding-right: 0;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--rule);
+  text-align: right;
+  white-space: nowrap;
+}
 
 .col-rank { width: 2.5rem; }
 
@@ -484,4 +493,24 @@ main > section > h2 {
   background: var(--on-accent);
   color: var(--ink);
   max-width: 100%;
+}
+
+/* ------------------------------------------------------------- sign-off */
+
+.signoff {
+  margin: 2.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.signature {
+  font-family: "Caveat", "Snell Roundhand", cursive;
+  font-size: clamp(2.25rem, 7vw, 3rem);
+  line-height: 1;
+  color: var(--pine);
+  margin: 0.25rem 0 0;
+  /* A real signature never sits perfectly square on the line. */
+  transform: rotate(-2deg);
+  transform-origin: left center;
+  display: inline-block;
 }
